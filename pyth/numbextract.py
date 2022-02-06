@@ -1,15 +1,14 @@
-from typing import Any, Dict
-
-D: Dict[int, Any] = {}
-
-def f(num: int) -> str:
-    for c in str(abs(num)):
-        D[int(c)] = str(num).count(c)
+def numxtract(number: int) -> str:
+    appearances: dict[str, int] = {}
     
-    for key in sorted(D):
-        print(f'{key} is found {D[key]} times')
+    for num in str(abs(number)):
+        appearances[num] = str(number).count(num)
+    
+    for key in sorted(appearances):
+        print(f'{key} is found {appearances[key]} times')
 
-    highest = max(D.values())
-    return f"max is {[key for key in D if D[key] == highest]}"
+    highest = max(map(int, appearances.values()))
+    return f"max is/are {', '.join(sorted(key for key in appearances if appearances[key] == highest))}"
 
-print(f(1100))
+# print(numxtract(-3331100))
+print(numxtract(45667799))
