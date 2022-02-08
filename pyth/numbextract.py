@@ -7,7 +7,7 @@ def numxtract(number: int) -> str:
     for key in sorted(appearances):
         print(f'{key} is found {appearances[key]} times')
 
-    highest = max(map(int, appearances.values()))
+    highest = max(appearances.values())
     return f"max is/are {', '.join(sorted(key for key in appearances if appearances[key] == highest))}"
 
 # print(numxtract(-3331100))
