@@ -1,5 +1,6 @@
 // code is copied from https://www.youtube.com/watch?v=DgRrrOt0Vr8
 // followthrough just 4 learning
+// not posting my personal attempt cuz no point
 const CALC_ACTIONS = {
 	ADD_DIGIT: 'add-digit',
 	CHOOSE_OPERATION: 'choose-operation',
