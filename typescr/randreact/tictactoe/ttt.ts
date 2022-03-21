@@ -1,50 +1,10 @@
-import React, { useState, useEffect, useReducer, memo } from "react";
-import "./App.css";
-
-export default function App(): JSX.Element {
-    return (
-        <div>
-            <h1>uhhhhhhhhhhh</h1>
-            <hr />
-
-            {/* <Testing /> */}
-            <TTT />
-            {/* <Idk/> */}
-        </div>
-    );
-}
-
-function red(state: any, action: any) {
-    switch (action.type) {
-        case "edit":
-            return { ...state, place: action.ct };
-        case "a":
-            return { ...state, place: "new" };
-    }
-}
-function Idk() {
-    const [st, disp] = useReducer(red, { place: "holder" });
-
-    const sleep = (seconds: number) =>
-        new Promise((r) => {
-            setTimeout(r, seconds * 1000);
-        });
-    async function ha() {
-        disp({ type: "edit", ct: "kkasbr" });
-        await sleep(0.5);
-        disp({ type: "a", payload: { idk: 1 } });
-    }
-
-    return <div onClick={ha}>asd: {st.place}</div>;
-}
-
 /* what i learned
 // any call of dispatch causes RERENDER
 */
 
 const TTT_ACTIONS = {
     CHECK_WIN: "check-win",
-    MOVE: "move",
+    PLAYER_MOVE: "player-move",
     COMPUTER_MOVE: "computer-move",
     RESTART: "restart",
     SEE_HISTORY: "see-history",
@@ -120,13 +80,14 @@ function tttReducer(state: TTTState, { type, payload }: TTTAction): TTTState {
     // they are stopped in the onclick handler in the fc
     switch (type) {
         case TTT_ACTIONS.CHECK_WIN:
+            if (state.movesMade < 5) return state; // impossible win here
+
             const status = gameOver(state.movesMade, state.board);
-            console.log(status);
             return status
                 ? { ...state, gameOver: true, winnerMessage: status }
                 : state;
 
-        case TTT_ACTIONS.MOVE:
+        case TTT_ACTIONS.PLAYER_MOVE:
             const playBoard = state.board.map((val, i) =>
                 i === payload.move ? "X" : val
             );
@@ -208,7 +169,10 @@ function TTT(): JSX.Element {
         )
             return;
 
-        dispatch({ type: TTT_ACTIONS.MOVE, payload: { move: position } });
+        dispatch({
+            type: TTT_ACTIONS.PLAYER_MOVE,
+            payload: { move: position },
+        });
         dispatch({ type: TTT_ACTIONS.CHECK_WIN, payload: {} });
         await sleep(0.3); // computer 'thinking'
         dispatch({ type: TTT_ACTIONS.COMPUTER_MOVE, payload: {} });
@@ -258,18 +222,6 @@ function TTT(): JSX.Element {
                     restart
                 </button>
             )}
-        </div>
-    );
-}
-
-function Testing(): JSX.Element {
-    const [noth, setNoth] = useState(0);
-    const [other, setOther] = useState(noth + 1);
-
-    return (
-        <div>
-            <div>as</div>
-            <input type="text" />
         </div>
     );
 }
